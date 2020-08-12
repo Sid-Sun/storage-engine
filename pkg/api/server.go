@@ -3,18 +3,21 @@ package api
 import (
 	"context"
 	"fmt"
-	"github.com/sid-sun/notes-api/cmd/config"
-	"github.com/sid-sun/notes-api/pkg/api/router"
-	"go.uber.org/zap"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	"github.com/sid-sun/notes-api/cmd/config"
+	"github.com/sid-sun/notes-api/pkg/api/router"
+	"github.com/sid-sun/notes-api/pkg/api/service"
+	"github.com/sid-sun/notes-api/pkg/api/store"
+	"go.uber.org/zap"
 )
 
 // StartServer starts the api, inits all the requited submodules and routine for shutdown
 func StartServer(cfg config.Config, logger *zap.Logger) {
-	r := router.New(logger)
+	r := router.New(logger, getService(logger))
 
 	srv := &http.Server{Addr: cfg.App.Address(), Handler: r}
 
@@ -27,6 +30,12 @@ func StartServer(cfg config.Config, logger *zap.Logger) {
 	}()
 
 	gracefulShutdown(srv, logger)
+}
+
+func getService(logger *zap.Logger) service.Service {
+	instance := store.NewInstance(logger)
+	st := store.NewStore(instance)
+	return service.NewNotesService(st, logger)
 }
 
 func gracefulShutdown(srv *http.Server, logger *zap.Logger) {
