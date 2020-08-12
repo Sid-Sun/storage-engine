@@ -58,7 +58,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 		_, err = handlers.DecryptAAD(d, req.Pass)
 		if err != nil && err.Error() == handlers.IncorrectPassError {
 			logger.Info(fmt.Sprintf("[%s] [%s] %s", api, "DecryptAAD", err.Error()))
-			writer.WriteHeader(http.StatusNotFound)
+			writer.WriteHeader(http.StatusForbidden)
 			return
 		}
 		if err != nil {
