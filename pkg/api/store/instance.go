@@ -8,6 +8,7 @@ import (
 // InstanceInterface defines a db instance interface
 type InstanceInterface interface {
 	Get(string) db.Data
+	Delete(string)
 	Put(string, db.Data)
 }
 
@@ -22,7 +23,12 @@ type Instance struct {
 	logger *zap.Logger
 }
 
-// Get returns a db Data instance coresponding to id
+// Delete deletes the db Data instance corresponding to id
+func (i Instance) Delete(id string) {
+	i.data[id] = db.Data{}
+}
+
+// Get returns a db Data instance corresponding to id
 func (i Instance) Get(id string) db.Data {
 	return i.data[id]
 }

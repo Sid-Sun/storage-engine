@@ -1,10 +1,9 @@
-package create
+package delete
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sid-sun/notes-api/pkg/api/contract/create"
-	"github.com/sid-sun/notes-api/pkg/api/contract/db"
+	"github.com/sid-sun/notes-api/pkg/api/contract/delete"
 	"github.com/sid-sun/notes-api/pkg/api/handlers"
 	"github.com/sid-sun/notes-api/pkg/api/service"
 	"go.uber.org/zap"
@@ -12,10 +11,10 @@ import (
 	"net/http"
 )
 
-// Handler handles all create requests
+// Handler handles all delete requests
 func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		logger.Info("[Create] [attempt]")
+		logger.Info("[Delete] [attempt]")
 
 		if request.Body == nil {
 			logger.Info(fmt.Sprintf("[%s] %s", api, "Request body is empty"))
@@ -30,7 +29,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		var req create.Request
+		var req delete.Request
 		err = json.Unmarshal(data, &req)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Unmarshal", err.Error()))
@@ -38,31 +37,35 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		if req.Pass == "" || req.Note == "" {
-			logger.Info(fmt.Sprintf("[%s] %s", api, "Pass or Note empty"))
+		if req.ID == "" || req.Pass == "" {
+			logger.Info(fmt.Sprintf("[%s] %s", api, "ID or Pass empty"))
 			writer.WriteHeader(http.StatusBadRequest)
 			return
 		}
 
-		if req.ID == "" || svc.Exists(req.ID) {
-			req.ID = handlers.RandString(8)
+		d := svc.Get(req.ID)
+		if d.IsEmpty() {
+			logger.Info(fmt.Sprintf("[%s] [%s]", api, "DataIsEmpty"))
+			writer.WriteHeader(http.StatusNotFound)
+			return
 		}
 
-		aad, hash, note, err := handlers.Encrypt(req.Note, req.Pass)
+		_, err = handlers.DecryptAAD(d, req.Pass)
+		if err != nil && err.Error() == handlers.IncorrectPassError {
+			logger.Info(fmt.Sprintf("[%s] [%s] %s", api, "DecryptAAD", err.Error()))
+			writer.WriteHeader(http.StatusNotFound)
+			return
+		}
 		if err != nil {
-			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Encrypt", err.Error()))
+			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "DecryptAAD", err.Error()))
 			writer.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		err = svc.Create(req.ID, db.NewDataInstance(aad, hash, note))
-		if err != nil {
-			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Create", err.Error()))
-			writer.WriteHeader(http.StatusInternalServerError)
-			return
+		svc.Delete(req.ID)
+		res := delete.Response{
+			ID:   req.ID,
 		}
-
-		res := create.Response{ID: req.ID}
 		data, err = json.Marshal(res)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Marshal", err.Error()))
@@ -77,6 +80,6 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		logger.Info("[Create] [success]")
+		logger.Info("[Delete] [success]")
 	}
 }

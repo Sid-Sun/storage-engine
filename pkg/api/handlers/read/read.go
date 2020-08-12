@@ -43,7 +43,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 		}
 
 		d := svc.Get(req.ID)
-		if service.DataIsEmpty(d) {
+		if d.IsEmpty() {
 			logger.Info(fmt.Sprintf("[%s] [%s]", api, "DataIsEmpty"))
 			writer.WriteHeader(http.StatusNotFound)
 			return
