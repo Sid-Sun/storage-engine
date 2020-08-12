@@ -2,6 +2,7 @@ package db
 
 import "bytes"
 
+// Data defines structure of db data
 type Data struct {
 	AAD  []byte   `json:"aad" bson:"aad"`
 	Hash [32]byte `json:"hash" bson:"hash"`
