@@ -1,4 +1,4 @@
-package updateNote
+package updatenote
 
 type Request struct {
 	ID      string `json:"id" bson:"id"`

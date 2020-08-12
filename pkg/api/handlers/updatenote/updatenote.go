@@ -1,10 +1,10 @@
-package updateNote
+package updatenote
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/sid-sun/notes-api/pkg/api/contract/db"
-	"github.com/sid-sun/notes-api/pkg/api/contract/updateNote"
+	"github.com/sid-sun/notes-api/pkg/api/contract/updatenote"
 	"github.com/sid-sun/notes-api/pkg/api/handlers"
 	"github.com/sid-sun/notes-api/pkg/api/service"
 	"go.uber.org/zap"
@@ -30,7 +30,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		var req updateNote.Request
+		var req updatenote.Request
 		err = json.Unmarshal(data, &req)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Unmarshal", err.Error()))
@@ -87,7 +87,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		res := updateNote.Response{ID: req.ID}
+		res := updatenote.Response{ID: req.ID}
 		data, err = json.Marshal(res)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Marshal", err.Error()))

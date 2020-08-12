@@ -1,4 +1,4 @@
-package updateNote
+package updatenote
 
 const (
 	api = "UpdateNote"
