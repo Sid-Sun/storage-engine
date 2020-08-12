@@ -7,6 +7,7 @@ import (
 	"github.com/sid-sun/notes-api/pkg/api/handlers/delete"
 	"github.com/sid-sun/notes-api/pkg/api/handlers/ping"
 	"github.com/sid-sun/notes-api/pkg/api/handlers/read"
+	"github.com/sid-sun/notes-api/pkg/api/handlers/updateNote"
 	"github.com/sid-sun/notes-api/pkg/api/service"
 	"go.uber.org/zap"
 )
@@ -18,6 +19,7 @@ func New(logger *zap.Logger, svc service.Service) *mux.Router {
 	myRouter.Handle("/", handlers.WithContentJSON(ping.Handler(logger))).Methods("GET")
 	myRouter.Handle("/create", handlers.WithContentJSON(create.Handler(logger, svc))).Methods("POST")
 	myRouter.Handle("/read", handlers.WithContentJSON(read.Handler(logger, svc))).Methods("GET")
+	myRouter.Handle("/update/note", handlers.WithContentJSON(updateNote.Handler(logger, svc))).Methods("PUT")
 	myRouter.Handle("/delete", handlers.WithContentJSON(delete.Handler(logger, svc))).Methods("DELETE")
 
 	return myRouter

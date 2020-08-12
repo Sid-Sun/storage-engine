@@ -43,7 +43,12 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		d := svc.Get(req.ID)
+		d, err := svc.Get(req.ID)
+		if err != nil {
+			logger.Info(fmt.Sprintf("[%s] [%s] %s", api, "Get", err.Error()))
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 		if d.IsEmpty() {
 			logger.Info(fmt.Sprintf("[%s] [%s]", api, "DataIsEmpty"))
 			writer.WriteHeader(http.StatusNotFound)
@@ -62,7 +67,13 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		svc.Delete(req.ID)
+		err = svc.Delete(req.ID)
+		if err != nil {
+			logger.Info(fmt.Sprintf("[%s] [%s] %s", api, "Delete", err.Error()))
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 		res := delete.Response{
 			ID:   req.ID,
 		}

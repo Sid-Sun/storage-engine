@@ -44,7 +44,14 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		if req.ID == "" || svc.Exists(req.ID) {
+		exists, err := svc.Exists(req.ID)
+		if err != nil {
+			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Exists", err.Error()))
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		if req.ID == "" || exists {
 			req.ID = handlers.RandString(8)
 		}
 

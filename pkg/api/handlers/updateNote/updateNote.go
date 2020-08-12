@@ -1,9 +1,10 @@
-package read
+package updateNote
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sid-sun/notes-api/pkg/api/contract/read"
+	"github.com/sid-sun/notes-api/pkg/api/contract/db"
+	"github.com/sid-sun/notes-api/pkg/api/contract/updateNote"
 	"github.com/sid-sun/notes-api/pkg/api/handlers"
 	"github.com/sid-sun/notes-api/pkg/api/service"
 	"go.uber.org/zap"
@@ -11,9 +12,10 @@ import (
 	"net/http"
 )
 
+// Handler handles all update note requests
 func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		logger.Info("[Read] [attempt]")
+		logger.Info("[UpdateNote] [attempt]")
 
 		if request.Body == nil {
 			logger.Info(fmt.Sprintf("[%s] %s", api, "Request body is empty"))
@@ -28,7 +30,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		var req read.Request
+		var req updateNote.Request
 		err = json.Unmarshal(data, &req)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Unmarshal", err.Error()))
@@ -36,8 +38,8 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		if req.ID == "" || req.Pass == "" {
-			logger.Info(fmt.Sprintf("[%s] %s", api, "ID or Pass empty"))
+		if req.ID == "" || req.Pass == "" || req.Note == "" {
+			logger.Info(fmt.Sprintf("[%s] %s", api, "Essential data missing"))
 			writer.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -54,7 +56,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		aad, err := handlers.DecryptAAD(d, req.Pass)
+		_, err = handlers.DecryptAAD(d, req.Pass)
 		if err != nil && err.Error() == handlers.IncorrectPassError {
 			logger.Info(fmt.Sprintf("[%s] [%s] %s", api, "DecryptAAD", err.Error()))
 			writer.WriteHeader(http.StatusNotFound)
@@ -66,17 +68,26 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		note, err := handlers.Decrypt(d.Note, aad)
+		if req.NewPass == "" {
+			req.NewPass = req.Pass
+		}
+
+		aad, hash, newNote, err := handlers.Encrypt(req.Note, req.NewPass)
 		if err != nil {
-			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Decrypt", err.Error()))
+			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Encrypt", err.Error()))
 			writer.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-		res := read.Response{
-			ID:   req.ID,
-			Note: note,
+		newData := db.NewDataInstance(aad, hash, newNote)
+		err = svc.Update(req.ID, newData)
+		if err != nil {
+			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Update", err.Error()))
+			writer.WriteHeader(http.StatusInternalServerError)
+			return
 		}
+
+		res := updateNote.Response{ID: req.ID}
 		data, err = json.Marshal(res)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Marshal", err.Error()))
@@ -91,6 +102,6 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		logger.Info("[Read] [success]")
+		logger.Info("[UpdateNote] [success]")
 	}
 }
