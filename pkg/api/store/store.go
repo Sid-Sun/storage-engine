@@ -1,11 +1,11 @@
 package store
 
-// Store wraps InstanceInterface
+// Store wraps CollectionInterface
 type Store struct {
-	InstanceInterface
+	CollectionInterface
 }
 
 // NewStore creates a new Store instance
-func NewStore(instanceInterface InstanceInterface) Store {
+func NewStore(instanceInterface CollectionInterface) Store {
 	return Store{instanceInterface}
 }

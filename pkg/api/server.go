@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"go.mongodb.org/mongo-driver/mongo"
 	"net/http"
 	"os"
 	"os/signal"
@@ -17,7 +18,8 @@ import (
 
 // StartServer starts the api, inits all the requited submodules and routine for shutdown
 func StartServer(cfg config.Config, logger *zap.Logger) {
-	r := router.New(logger, getService(logger))
+	mc, svc := getService(cfg.DBConfig, logger)
+	r := router.New(logger, svc)
 
 	srv := &http.Server{Addr: cfg.App.Address(), Handler: r}
 
@@ -29,16 +31,23 @@ func StartServer(cfg config.Config, logger *zap.Logger) {
 		}
 	}()
 
-	gracefulShutdown(srv, logger)
+	gracefulShutdown(srv, logger, mc)
 }
 
-func getService(logger *zap.Logger) service.Service {
-	instance := store.NewInstance(logger)
-	st := store.NewStore(instance)
-	return service.NewNotesService(st, logger)
+func getService(dbc config.DBConfig, logger *zap.Logger) (*mongo.Client, service.Service) {
+	mc := store.NewClient(dbc, logger)
+	client, mcl, err := mc.GetCollection()
+	if err != nil {
+		// If initial connection or ping fails, panic
+		panic(err)
+	}
+	cl := store.NewCollection(mcl, logger)
+	st := store.NewStore(cl)
+	return client, service.NewNotesService(st, logger)
+
 }
 
-func gracefulShutdown(srv *http.Server, logger *zap.Logger) {
+func gracefulShutdown(srv *http.Server, logger *zap.Logger, mc *mongo.Client) {
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 	<-c
@@ -48,7 +57,14 @@ func gracefulShutdown(srv *http.Server, logger *zap.Logger) {
 
 	go func() {
 		if err := srv.Shutdown(ctx); err != nil {
-			logger.Error(fmt.Sprintf("[GracefulShutdown] [Shutdown]: %s", err.Error()))
+			logger.Error(fmt.Sprintf("[GracefulShutdown] [Shutdown] [Server]: %s", err.Error()))
+			panic(err)
+		}
+	}()
+
+	go func() {
+		if err := mc.Disconnect(ctx); err != nil {
+			logger.Error(fmt.Sprintf("[GracefulShutdown] [Shutdown] [MongoClient]: %s", err.Error()))
 			panic(err)
 		}
 	}()

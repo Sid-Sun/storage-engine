@@ -1,9 +1,15 @@
 version: '3.7'
 
-services: 
+services:
+    db:
+        image: mongo:3.6
+        env_file: mongo.env
+
     api:
         # image: realsidsun/notes-api:latest
         build: .
+        depends_on: 
+            - db
         env_file: dev.env
         ports: 
             - 5050:5050
