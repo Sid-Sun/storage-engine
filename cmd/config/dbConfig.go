@@ -10,6 +10,7 @@ type DBConfig struct {
 	port       string
 	database   string
 	collection string
+	timeout    int
 }
 
 func (db DBConfig) Address() string {
@@ -25,4 +26,8 @@ func (db DBConfig) Collection() string {
 
 func (db DBConfig) Database() string {
 	return db.database
+}
+
+func (db DBConfig) TimeoutInSec() int {
+	return db.timeout
 }

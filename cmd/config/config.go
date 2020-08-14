@@ -2,22 +2,27 @@ package config
 
 import (
 	"os"
+	"strconv"
 )
 
-// Config contains all the neccessary configurations
+// Config contains all the necessary configurations
 type Config struct {
 	App         appConfig
 	environment string
 	DBConfig    DBConfig
 }
 
-// GetEnv returns the current developemnt environment
+// GetEnv returns the current development environment
 func (c Config) GetEnv() string {
 	return c.environment
 }
 
 // Load reads all config from env to config
 func Load() Config {
+	timeout, _ := strconv.Atoi(os.Getenv("DB_TIMEOUT"))
+	if timeout == 0 {
+		timeout = 5
+	}
 	return Config{
 		environment: os.Getenv("APP_ENV"),
 		App: appConfig{
@@ -31,6 +36,7 @@ func Load() Config {
 			database:   os.Getenv("DB_NAME"),
 			collection: os.Getenv("DB_COLLECTION"),
 			env:        os.Getenv("APP_ENV"),
+			timeout:    timeout,
 		},
 	}
 }

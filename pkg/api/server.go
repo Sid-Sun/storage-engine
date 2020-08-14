@@ -41,7 +41,7 @@ func getService(dbc config.DBConfig, logger *zap.Logger) (*mongo.Client, service
 		// If initial connection or ping fails, panic
 		panic(err)
 	}
-	cl := store.NewCollection(mcl, logger)
+	cl := store.NewCollection(mcl, logger, dbc)
 	st := store.NewStore(cl)
 	return client, service.NewNotesService(st, logger)
 
