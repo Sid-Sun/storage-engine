@@ -17,7 +17,7 @@ func (db DBConfig) Address() string {
 	if db.env == dev {
 		return fmt.Sprintf("%s://%s:%s@%s:%s/", "mongodb", db.user, db.pass, db.host, db.port)
 	}
-	return fmt.Sprintf("%s://%s:%s@%s:%s/?ssl=true", "mongodb", db.user, db.pass, db.host, db.port)
+	return fmt.Sprintf("%s://%s:%s@%s/?retryWrites=true&w=majority", "mongodb+srv", db.user, db.pass, db.host)
 }
 
 func (db DBConfig) Collection() string {

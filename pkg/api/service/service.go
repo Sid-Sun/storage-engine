@@ -1,7 +1,6 @@
 package service
 
 import (
-	"errors"
 	"fmt"
 	"github.com/sid-sun/notes-api/pkg/api/contract/db"
 	"github.com/sid-sun/notes-api/pkg/api/store"
@@ -93,7 +92,7 @@ func (n NotesService) Delete(id string) error {
 	}
 
 	if res.DeletedCount != 1 {
-		err = errors.New(fmt.Sprintf("expected deleted count to be 1, was: %d", res.DeletedCount))
+		err = fmt.Errorf("expected deleted count to be 1, was: %d", res.DeletedCount)
 		n.logger.Sugar().Errorf("%s : %v", "[Service] [Delete] [DeletedCount]", err)
 		return err
 	}
@@ -114,7 +113,7 @@ func (n NotesService) Exists(id string) (bool, error) {
 }
 
 // NewNotesService creates a new instance of NotesService
-func NewNotesService(st store.Store, lg *zap.Logger, ) NotesService {
+func NewNotesService(st store.Store, lg *zap.Logger) NotesService {
 	return NotesService{
 		logger: lg,
 		store:  st,

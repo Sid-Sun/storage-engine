@@ -5,6 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+// Query defines the structure for querying db for data
 type Query struct {
 	ID   string   `json:"id" bson:"id"`
 }

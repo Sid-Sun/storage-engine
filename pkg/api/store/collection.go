@@ -2,8 +2,9 @@ package store
 
 import (
 	"context"
-	"github.com/sid-sun/notes-api/cmd/config"
 	"time"
+
+	"github.com/sid-sun/notes-api/cmd/config"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
@@ -41,7 +42,7 @@ func (c Collection) Delete(condition []byte) (*mongo.DeleteResult, error) {
 	return res, err
 }
 
-// Get returns a db Data instance corresponding to id
+// Find returns a db Data instance corresponding to id
 func (c Collection) Find(condition []byte) (*mongo.SingleResult, error) {
 	ctx, _ := context.WithTimeout(context.Background(), c.timeout)
 
