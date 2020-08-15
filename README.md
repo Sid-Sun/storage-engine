@@ -29,7 +29,7 @@ Method: `POST`
 
 URL:
 ```
-http://$host:$port/set
+http://$host:$port/create
 ```
 
 BODY:
@@ -76,7 +76,7 @@ Method: `GET`
 
 URL:
 ```
-http://$host:$port/get
+http://$host:$port/read
 ```
 
 BODY:
@@ -237,7 +237,7 @@ Method: `PATCH`
 
 URL:
 ```
-http://$host:$port/update/pas
+http://$host:$port/update/pass
 ```
 
 
