@@ -7,7 +7,7 @@ import (
 
 // Query defines the structure for querying db for data
 type Query struct {
-	ID   string   `json:"id" bson:"id"`
+	ID   string   `json:"_id" bson:"_id"`
 }
 
 // ToBSON converts data to BSON representation
@@ -18,7 +18,7 @@ func (q Query) ToBSON() ([]byte, error) {
 
 // Data defines structure of db data
 type Data struct {
-	ID   string   `json:"id" bson:"id"`
+	ID   string   `json:"_id" bson:"_id"`
 	AAD  []byte   `json:"aad" bson:"aad"`
 	Hash [32]byte `json:"hash" bson:"hash"`
 	Note []byte   `json:"note" bson:"note"`
