@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/base64"
 	"fmt"
 	"github.com/sid-sun/notes-api/pkg/api/contract/db"
 	"github.com/sid-sun/notes-api/pkg/api/store"
@@ -27,7 +28,7 @@ type NotesService struct {
 // Create creates a new record in DB, handling translations
 func (n NotesService) Create(id string, data db.Data) error {
 	hash := sha3.Sum256([]byte(id))
-	data.ID = string(hash[:])
+	data.ID = base64.StdEncoding.EncodeToString(hash[:])
 	doc, err := data.ToBSON()
 	if err != nil {
 		n.logger.Sugar().Errorf("%s : %v", "[Service] [Create] [ToBSON]", err)
@@ -45,7 +46,7 @@ func (n NotesService) Create(id string, data db.Data) error {
 // and returns a db data, handling translations
 func (n NotesService) Get(id string) (db.Data, error) {
 	hash := sha3.Sum256([]byte(id))
-	q := db.Query{ID: string(hash[:])}
+	q := db.Query{ID: base64.StdEncoding.EncodeToString(hash[:])}
 	doc, err := q.ToBSON()
 	if err != nil {
 		n.logger.Sugar().Errorf("%s : %v", "[Service] [Get] [ToBSON]", err)
@@ -79,7 +80,7 @@ func (n NotesService) Update(id string, data db.Data) error {
 // handing translations and deleting nothing
 func (n NotesService) Delete(id string) error {
 	hash := sha3.Sum256([]byte(id))
-	q := db.Query{ID: string(hash[:])}
+	q := db.Query{ID: base64.StdEncoding.EncodeToString(hash[:])}
 	doc, err := q.ToBSON()
 	if err != nil {
 		n.logger.Sugar().Errorf("%s : %v", "[Service] [Delete] [ToBSON]", err)
