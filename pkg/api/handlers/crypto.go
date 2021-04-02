@@ -19,9 +19,12 @@ func Encrypt(note string, password string) ([]byte, [32]byte, []byte, error) {
 		return nil, [32]byte{}, nil, err
 	}
 
+	// Store in a var to avoid converting twice
+	noteBytes := []byte(note)
+
 	// Create dst with length of aes blocksize + note length
 	// And initialize first BlockSize bytes randonly for IV
-	dst := make([]byte, aes.BlockSize+len([]byte(note)))
+	dst := make([]byte, aes.BlockSize+len(noteBytes))
 	if _, err := io.ReadFull(rand.Reader, dst[:aes.BlockSize]); err != nil {
 		return nil, [32]byte{}, nil, err
 	}
@@ -32,7 +35,7 @@ func Encrypt(note string, password string) ([]byte, [32]byte, []byte, error) {
 		return nil, [32]byte{}, nil, err
 	}
 	cfb := cipher.NewCFBEncrypter(blockCipher, dst[:aes.BlockSize])
-	cfb.XORKeyStream(dst[aes.BlockSize:], []byte(note))
+	cfb.XORKeyStream(dst[aes.BlockSize:], noteBytes)
 
 	// Hash AAD - used for proper pass verification in get
 	aadHash := sha3.Sum256(AAD)
@@ -58,8 +61,8 @@ func DecryptAAD(data db.Data, pass string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+	
 	decryptedAAD := make([]byte, 32)
-
 	// Decrypt AAD & Hash it
 	blockCipher.Decrypt(decryptedAAD[:aes.BlockSize], data.AAD[:aes.BlockSize])
 	blockCipher.Decrypt(decryptedAAD[aes.BlockSize:], data.AAD[aes.BlockSize:])
@@ -81,6 +84,7 @@ func Decrypt(note []byte, decryptedAAD []byte) (string, error) {
 	if err != nil {
 		return "", err
 	}
+
 	// Create CFB Decrypter with cipher, instantiating with IV
 	cfb := cipher.NewCFBDecrypter(blockCipher, note[:aes.BlockSize])
 	// Create variable for storing decrypted note of shorter length taking into account IV
