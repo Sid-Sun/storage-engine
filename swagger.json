@@ -1,0 +1,455 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a sample API for managing notes.",
+    "title": "notes-api Notes API",
+    "contact": {
+      "name": "Your Name",
+      "url": "https://example.com",
+      "email": "you@example.com"
+    },
+    "version": "1.0.0"
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "paths": {
+    "/": {
+      "get": {
+        "tags": [
+          "ping"
+        ],
+        "summary": "Ping endpoint to check API health.",
+        "operationId": "pingEndpoint",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/pingResponse"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      }
+    },
+    "/create": {
+      "post": {
+        "tags": [
+          "create"
+        ],
+        "summary": "Create a new note.",
+        "operationId": "createNoteEndpoint",
+        "parameters": [
+          {
+            "x-go-name": "Body",
+            "description": "The note to create.",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/createRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/createResponse"
+          },
+          "400": {
+            "$ref": "#/responses/genericError"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      }
+    },
+    "/delete": {
+      "delete": {
+        "tags": [
+          "delete"
+        ],
+        "summary": "Delete an existing note.",
+        "operationId": "deleteNoteEndpoint",
+        "parameters": [
+          {
+            "x-go-name": "Body",
+            "description": "The note ID and password to delete.",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/deleteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/deleteResponse"
+          },
+          "400": {
+            "$ref": "#/responses/genericError"
+          },
+          "403": {
+            "$ref": "#/responses/genericError"
+          },
+          "404": {
+            "$ref": "#/responses/genericError"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      }
+    },
+    "/read": {
+      "get": {
+        "tags": [
+          "read"
+        ],
+        "summary": "Read an existing note.",
+        "operationId": "readNoteEndpoint",
+        "parameters": [
+          {
+            "x-go-name": "Body",
+            "description": "The note ID and password to read.",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/readRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/readResponse"
+          },
+          "400": {
+            "$ref": "#/responses/genericError"
+          },
+          "403": {
+            "$ref": "#/responses/genericError"
+          },
+          "404": {
+            "$ref": "#/responses/genericError"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      }
+    },
+    "/update/note": {
+      "put": {
+        "tags": [
+          "update"
+        ],
+        "summary": "Update an existing note.",
+        "operationId": "updatenoteEndpoint",
+        "parameters": [
+          {
+            "x-go-name": "Body",
+            "description": "The note update details.",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updatenoteRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/updatenoteResponse"
+          },
+          "400": {
+            "$ref": "#/responses/genericError"
+          },
+          "403": {
+            "$ref": "#/responses/genericError"
+          },
+          "404": {
+            "$ref": "#/responses/genericError"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      }
+    },
+    "/update/pass": {
+      "patch": {
+        "tags": [
+          "update"
+        ],
+        "summary": "Update an existing note's password.",
+        "operationId": "updatepassEndpoint",
+        "parameters": [
+          {
+            "x-go-name": "Body",
+            "description": "The password update details.",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/updatepassRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/updatepassResponse"
+          },
+          "400": {
+            "$ref": "#/responses/genericError"
+          },
+          "403": {
+            "$ref": "#/responses/genericError"
+          },
+          "404": {
+            "$ref": "#/responses/genericError"
+          },
+          "500": {
+            "$ref": "#/responses/genericError"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "createRequest": {
+      "type": "object",
+      "title": "Request is the actual data structure for the create request body.",
+      "required": [
+        "pass",
+        "note"
+      ],
+      "properties": {
+        "id": {
+          "description": "Optional: ID for the note. If not provided, a random ID will be generated.",
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "note": {
+          "description": "Content of the note.",
+          "type": "string",
+          "x-go-name": "Note"
+        },
+        "pass": {
+          "description": "Password for the note.",
+          "type": "string",
+          "x-go-name": "Pass"
+        }
+      },
+      "x-go-name": "Request",
+      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/create"
+    },
+    "deleteRequest": {
+      "type": "object",
+      "title": "Request is the actual data structure for the delete request body.",
+      "required": [
+        "id",
+        "pass"
+      ],
+      "properties": {
+        "id": {
+          "description": "ID of the note to delete.",
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "pass": {
+          "description": "Password for the note.",
+          "type": "string",
+          "x-go-name": "Pass"
+        }
+      },
+      "x-go-name": "Request",
+      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/delete"
+    },
+    "readRequest": {
+      "type": "object",
+      "title": "Request is the actual data structure for the read request body.",
+      "required": [
+        "id",
+        "pass"
+      ],
+      "properties": {
+        "id": {
+          "description": "ID of the note to read.",
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "pass": {
+          "description": "Password for the note.",
+          "type": "string",
+          "x-go-name": "Pass"
+        }
+      },
+      "x-go-name": "Request",
+      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/read"
+    },
+    "updatenoteRequest": {
+      "type": "object",
+      "title": "Request is the actual data structure for the update note request body.",
+      "required": [
+        "id",
+        "note",
+        "pass"
+      ],
+      "properties": {
+        "id": {
+          "description": "ID of the note to update.",
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "new_pass": {
+          "description": "Optional: New password for the note. If not provided, the password will not be changed.",
+          "type": "string",
+          "x-go-name": "NewPass"
+        },
+        "note": {
+          "description": "New content for the note.",
+          "type": "string",
+          "x-go-name": "Note"
+        },
+        "pass": {
+          "description": "Current password for the note.",
+          "type": "string",
+          "x-go-name": "Pass"
+        }
+      },
+      "x-go-name": "Request",
+      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/updatenote"
+    },
+    "updatepassRequest": {
+      "type": "object",
+      "title": "Request is the actual data structure for the update password request body.",
+      "required": [
+        "id",
+        "pass",
+        "new_pass"
+      ],
+      "properties": {
+        "id": {
+          "description": "ID of the note to update.",
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "new_pass": {
+          "description": "New password for the note.",
+          "type": "string",
+          "x-go-name": "NewPass"
+        },
+        "pass": {
+          "description": "Current password for the note.",
+          "type": "string",
+          "x-go-name": "Pass"
+        }
+      },
+      "x-go-name": "Request",
+      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/updatepass"
+    }
+  },
+  "responses": {
+    "createResponse": {
+      "description": "Create response body",
+      "headers": {
+        "id": {
+          "type": "string",
+          "description": "ID of the created note."
+        }
+      }
+    },
+    "deleteResponse": {
+      "description": "Delete response body",
+      "headers": {
+        "id": {
+          "type": "string",
+          "description": "ID of the deleted note."
+        }
+      }
+    },
+    "genericError": {
+      "description": "",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "x-go-name": "Message"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "The error message"
+        }
+      }
+    },
+    "genericSuccess": {
+      "description": "",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "x-go-name": "Message"
+          }
+        }
+      },
+      "headers": {
+        "Body": {
+          "description": "The success message"
+        }
+      }
+    },
+    "pingResponse": {
+      "description": "Ping response body",
+      "headers": {
+        "message": {
+          "type": "string",
+          "description": "The ping message"
+        }
+      }
+    },
+    "readResponse": {
+      "description": "Read response body",
+      "headers": {
+        "id": {
+          "type": "string",
+          "description": "ID of the note."
+        },
+        "note": {
+          "type": "string",
+          "description": "Content of the note."
+        }
+      }
+    },
+    "updatenoteResponse": {
+      "description": "Update note response body",
+      "headers": {
+        "id": {
+          "type": "string",
+          "description": "ID of the updated note."
+        }
+      }
+    },
+    "updatepassResponse": {
+      "description": "Update password response body",
+      "headers": {
+        "id": {
+          "type": "string",
+          "description": "ID of the updated note."
+        }
+      }
+    }
+  }
+}
