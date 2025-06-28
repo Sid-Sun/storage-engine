@@ -41,22 +41,31 @@ var _ = delete.Request{}
 var _ = delete.Response{}
 var _ = ping.Response{}
 
+// ErrorMessage represents a generic error message.
+// swagger:model
+type ErrorMessage struct {
+	Message string `json:"message"`
+}
+
+// SuccessMessage represents a generic success message.
+// swagger:model
+type SuccessMessage struct {
+	Message string `json:"message"`
+}
+
+// A generic error response.
 // swagger:response genericError
 type GenericError struct {
-	// The error message
-	Body struct {
-		Message string `json:"message"`
-	}
+    // in:body
+    Body ErrorMessage
 }
 
+// A generic success response.
 // swagger:response genericSuccess
 type GenericSuccess struct {
-	// The success message
-	Body struct {
-		Message string `json:"message"`
-	}
+    // in:body
+    Body SuccessMessage
 }
-
 
 func main() {
 	cfg := config.Load()

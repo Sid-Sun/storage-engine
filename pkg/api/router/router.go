@@ -13,7 +13,6 @@ import (
 	httpSwagger "github.com/swaggo/http-swagger"
 	"go.uber.org/zap"
 	"net/http"
-	"os"
 	"path/filepath"
 )
 

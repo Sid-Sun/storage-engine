@@ -1,17 +1,27 @@
-version: '3.7'
+# Using version 3.8 for newer features, but 3.7 is also fine.
+version: "3.8"
 
 services:
-    db:
-        image: mongo:3.6
-        env_file: mongo.env
-        ports:
-        -   27017:27017
+  db:
+    # Updated to a more recent, specific version of Mongo.
+    image: mongo:noble
+    # The mongo.env file should contain the database credentials.
+    env_file: mongo.env
+    ports:
+      - "27017:27017"
+    # This creates a local directory to persist database data across container restarts.
+    volumes:
+      - ./mongo-data:/data/db
+    # Ensures that the database starts with authentication enabled.
+    command: mongod --auth
 
-    api:
-        # image: realsidsun/notes-api:latest
-        build: .
-        depends_on: 
-            - db
-        env_file: dev.env
-        ports: 
-            - 5050:5050
+  api:
+    # Use the build context from the current directory.
+    build: .
+    # Ensures the 'db' service is started before the 'api' service.
+    depends_on:
+      - db
+    # Loads environment variables for the API service.
+    env_file: dev.env
+    ports:
+      - "5050:5050"

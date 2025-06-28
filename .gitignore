@@ -6,3 +6,4 @@ out
 vendor/
 *.out
 prod.env
+mongo-data

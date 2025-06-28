@@ -225,6 +225,28 @@
     }
   },
   "definitions": {
+    "ErrorMessage": {
+      "type": "object",
+      "title": "ErrorMessage represents a generic error message.",
+      "properties": {
+        "message": {
+          "type": "string",
+          "x-go-name": "Message"
+        }
+      },
+      "x-go-package": "github.com/sid-sun/notes-api/cmd"
+    },
+    "SuccessMessage": {
+      "type": "object",
+      "title": "SuccessMessage represents a generic success message.",
+      "properties": {
+        "message": {
+          "type": "string",
+          "x-go-name": "Message"
+        }
+      },
+      "x-go-package": "github.com/sid-sun/notes-api/cmd"
+    },
     "createRequest": {
       "type": "object",
       "title": "Request is the actual data structure for the create request body.",
@@ -378,37 +400,15 @@
       }
     },
     "genericError": {
-      "description": "",
+      "description": "A generic error response.",
       "schema": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "x-go-name": "Message"
-          }
-        }
-      },
-      "headers": {
-        "Body": {
-          "description": "The error message"
-        }
+        "$ref": "#/definitions/ErrorMessage"
       }
     },
     "genericSuccess": {
-      "description": "",
+      "description": "A generic success response.",
       "schema": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "x-go-name": "Message"
-          }
-        }
-      },
-      "headers": {
-        "Body": {
-          "description": "The success message"
-        }
+        "$ref": "#/definitions/SuccessMessage"
       }
     },
     "pingResponse": {

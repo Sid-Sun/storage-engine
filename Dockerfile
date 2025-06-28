@@ -1,4 +1,4 @@
-FROM golang:buster as build
+FROM golang:bookworm as build
 
 WORKDIR /build
 COPY go.mod .
@@ -11,5 +11,6 @@ FROM alpine
 WORKDIR /root/app
 RUN apk add libc6-compat --no-cache
 COPY --from=build /build/out .
+COPY swagger.json .
 
 CMD [ "/root/app/notes-api" ]
