@@ -1,4 +1,4 @@
-FROM golang:bookworm as build
+FROM golang:bookworm AS build
 
 WORKDIR /build
 COPY go.mod .
