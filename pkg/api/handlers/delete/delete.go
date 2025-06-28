@@ -3,9 +3,9 @@ package delete
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sid-sun/notes-api/pkg/api/contract/delete"
-	"github.com/sid-sun/notes-api/pkg/api/handlers"
-	"github.com/sid-sun/notes-api/pkg/api/service"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/delete"
+	"github.com/sid-sun/storage-engine/pkg/api/handlers"
+	"github.com/sid-sun/storage-engine/pkg/api/service"
 	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
@@ -75,7 +75,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 		}
 
 		res := delete.Response{
-			ID:   req.ID,
+			ID: req.ID,
 		}
 		data, err = json.Marshal(res)
 		if err != nil {

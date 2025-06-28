@@ -1,4 +1,4 @@
-module github.com/sid-sun/notes-api
+module github.com/sid-sun/storage-engine
 
 go 1.24
 

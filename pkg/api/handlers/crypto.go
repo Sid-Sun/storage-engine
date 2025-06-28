@@ -6,7 +6,7 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"errors"
-	"github.com/sid-sun/notes-api/pkg/api/contract/db"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/db"
 	"golang.org/x/crypto/sha3"
 	"io"
 )
@@ -61,7 +61,7 @@ func DecryptAAD(data db.Data, pass string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	decryptedAAD := make([]byte, 32)
 	// Decrypt AAD & Hash it
 	blockCipher.Decrypt(decryptedAAD[:aes.BlockSize], data.AAD[:aes.BlockSize])

@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/sid-sun/notes-api/cmd/config"
+	"github.com/sid-sun/storage-engine/cmd/config"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"

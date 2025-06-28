@@ -3,9 +3,9 @@ package read
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sid-sun/notes-api/pkg/api/contract/read"
-	"github.com/sid-sun/notes-api/pkg/api/handlers"
-	"github.com/sid-sun/notes-api/pkg/api/service"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/read"
+	"github.com/sid-sun/storage-engine/pkg/api/handlers"
+	"github.com/sid-sun/storage-engine/pkg/api/service"
 	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"

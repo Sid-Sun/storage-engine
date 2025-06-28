@@ -3,7 +3,7 @@ package ping
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/sid-sun/notes-api/pkg/api/contract/ping"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/ping"
 	"go.uber.org/zap"
 	"net/http"
 )

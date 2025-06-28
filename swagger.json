@@ -10,16 +10,16 @@
   ],
   "swagger": "2.0",
   "info": {
-    "description": "This is a sample API for managing notes.",
-    "title": "notes-api Notes API",
+    "description": "An API which can be easily integrated into applications to provide state/storage.",
+    "title": "Storage Engine",
     "contact": {
-      "name": "Your Name",
-      "url": "https://example.com",
-      "email": "you@example.com"
+      "name": "Sid Sun",
+      "url": "https://sidsun.com",
+      "email": "sid@sidsun.com"
     },
     "version": "1.0.0"
   },
-  "host": "localhost:8080",
+  "host": "localhost:5050",
   "basePath": "/",
   "paths": {
     "/": {
@@ -234,7 +234,7 @@
           "x-go-name": "Message"
         }
       },
-      "x-go-package": "github.com/sid-sun/notes-api/cmd"
+      "x-go-package": "github.com/sid-sun/storage-engine/cmd"
     },
     "SuccessMessage": {
       "type": "object",
@@ -245,7 +245,7 @@
           "x-go-name": "Message"
         }
       },
-      "x-go-package": "github.com/sid-sun/notes-api/cmd"
+      "x-go-package": "github.com/sid-sun/storage-engine/cmd"
     },
     "createRequest": {
       "type": "object",
@@ -272,7 +272,7 @@
         }
       },
       "x-go-name": "Request",
-      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/create"
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/create"
     },
     "deleteRequest": {
       "type": "object",
@@ -294,7 +294,7 @@
         }
       },
       "x-go-name": "Request",
-      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/delete"
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/delete"
     },
     "readRequest": {
       "type": "object",
@@ -316,7 +316,7 @@
         }
       },
       "x-go-name": "Request",
-      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/read"
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/read"
     },
     "updatenoteRequest": {
       "type": "object",
@@ -349,7 +349,7 @@
         }
       },
       "x-go-name": "Request",
-      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/updatenote"
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/updatenote"
     },
     "updatepassRequest": {
       "type": "object",
@@ -377,7 +377,7 @@
         }
       },
       "x-go-name": "Request",
-      "x-go-package": "github.com/sid-sun/notes-api/pkg/api/contract/updatepass"
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/updatepass"
     }
   },
   "responses": {

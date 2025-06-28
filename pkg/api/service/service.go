@@ -3,8 +3,8 @@ package service
 import (
 	"encoding/base64"
 	"fmt"
-	"github.com/sid-sun/notes-api/pkg/api/contract/db"
-	"github.com/sid-sun/notes-api/pkg/api/store"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/db"
+	"github.com/sid-sun/storage-engine/pkg/api/store"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
 	"golang.org/x/crypto/sha3"

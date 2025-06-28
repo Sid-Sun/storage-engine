@@ -9,10 +9,10 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/sid-sun/notes-api/cmd/config"
-	"github.com/sid-sun/notes-api/pkg/api/router"
-	"github.com/sid-sun/notes-api/pkg/api/service"
-	"github.com/sid-sun/notes-api/pkg/api/store"
+	"github.com/sid-sun/storage-engine/cmd/config"
+	"github.com/sid-sun/storage-engine/pkg/api/router"
+	"github.com/sid-sun/storage-engine/pkg/api/service"
+	"github.com/sid-sun/storage-engine/pkg/api/store"
 	"go.uber.org/zap"
 )
 

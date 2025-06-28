@@ -1,12 +1,12 @@
-// Package classification notes-api Notes API
+// Package classification Storage Engine
 //
-// This is a sample API for managing notes.
+// An API which can be easily integrated into applications to provide state/storage.
 //
 //	Schemes: http
-//	Host: localhost:8080
+//	Host: localhost:5050
 //	BasePath: /
 //	Version: 1.0.0
-//	Contact: Your Name <you@example.com> https://example.com
+//	Contact: Sid Sun <sid@sidsun.com> https://sidsun.com
 //
 //	Consumes:
 //	- application/json
@@ -18,14 +18,14 @@
 package main
 
 import (
-	"github.com/sid-sun/notes-api/cmd/config"
-	"github.com/sid-sun/notes-api/pkg/api"
-	"github.com/sid-sun/notes-api/pkg/api/contract/create"
-	"github.com/sid-sun/notes-api/pkg/api/contract/delete"
-	"github.com/sid-sun/notes-api/pkg/api/contract/ping"
-	"github.com/sid-sun/notes-api/pkg/api/contract/read"
-	"github.com/sid-sun/notes-api/pkg/api/contract/updatenote"
-	"github.com/sid-sun/notes-api/pkg/api/contract/updatepass"
+	"github.com/sid-sun/storage-engine/cmd/config"
+	"github.com/sid-sun/storage-engine/pkg/api"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/create"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/delete"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/ping"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/read"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/updatenote"
+	"github.com/sid-sun/storage-engine/pkg/api/contract/updatepass"
 )
 
 // Not using these directly, but need them for swagger generation
@@ -56,15 +56,15 @@ type SuccessMessage struct {
 // A generic error response.
 // swagger:response genericError
 type GenericError struct {
-    // in:body
-    Body ErrorMessage
+	// in:body
+	Body ErrorMessage
 }
 
 // A generic success response.
 // swagger:response genericSuccess
 type GenericSuccess struct {
-    // in:body
-    Body SuccessMessage
+	// in:body
+	Body SuccessMessage
 }
 
 func main() {

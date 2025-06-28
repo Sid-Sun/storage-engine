@@ -1,5 +1,5 @@
 ALL_PACKAGES=$(shell go list ./... | grep -v "vendor")
-APP=notes-api
+APP=storage-engine
 APP_VERSION:="1.0"
 APP_COMMIT:=$(shell git rev-parse HEAD)
 APP_EXECUTABLE="./out/$(APP)"

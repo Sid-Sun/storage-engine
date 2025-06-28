@@ -2,14 +2,14 @@ package router
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/sid-sun/notes-api/pkg/api/handlers"
-	"github.com/sid-sun/notes-api/pkg/api/handlers/create"
-	"github.com/sid-sun/notes-api/pkg/api/handlers/delete"
-	"github.com/sid-sun/notes-api/pkg/api/handlers/ping"
-	"github.com/sid-sun/notes-api/pkg/api/handlers/read"
-	"github.com/sid-sun/notes-api/pkg/api/handlers/updatenote"
-	"github.com/sid-sun/notes-api/pkg/api/handlers/updatepass"
-	"github.com/sid-sun/notes-api/pkg/api/service"
+	"github.com/sid-sun/storage-engine/pkg/api/handlers"
+	"github.com/sid-sun/storage-engine/pkg/api/handlers/create"
+	"github.com/sid-sun/storage-engine/pkg/api/handlers/delete"
+	"github.com/sid-sun/storage-engine/pkg/api/handlers/ping"
+	"github.com/sid-sun/storage-engine/pkg/api/handlers/read"
+	"github.com/sid-sun/storage-engine/pkg/api/handlers/updatenote"
+	"github.com/sid-sun/storage-engine/pkg/api/handlers/updatepass"
+	"github.com/sid-sun/storage-engine/pkg/api/service"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"go.uber.org/zap"
 	"net/http"
@@ -29,7 +29,6 @@ func New(logger *zap.Logger, svc service.Service) *mux.Router {
 
 	// Serve Swagger UI
 	myRouter.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
-
 
 	// swagger:route GET / ping pingEndpoint
 	// Ping endpoint to check API health.

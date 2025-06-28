@@ -13,4 +13,4 @@ RUN apk add libc6-compat --no-cache
 COPY --from=build /build/out .
 COPY swagger.json .
 
-CMD [ "/root/app/notes-api" ]
+CMD [ "/root/app/storage-engine" ]
