@@ -18,7 +18,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 		logger.Info("[UpdatePass] [attempt]")
 
 		if request.Body == nil {
-			logger.Info(fmt.Sprintf("[%s] %s", api, "Request body is empty"))
+			logger.Info(fmt.Sprintf("[%s] %s", api, "UpdatePassRequest body is empty"))
 			writer.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -30,7 +30,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		var req updatepass.Request
+		var req updatepass.UpdatePassRequest
 		err = json.Unmarshal(data, &req)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Unmarshal", err.Error()))
@@ -90,7 +90,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		res := updatepass.Response{ID: req.ID}
+		res := updatepass.UpdatePassResponse{ID: req.ID}
 		data, err = json.Marshal(res)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Marshal", err.Error()))

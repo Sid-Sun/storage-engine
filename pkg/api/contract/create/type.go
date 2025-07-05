@@ -1,10 +1,10 @@
 package create
 
-// Request is the actual data structure for the create request body.
+// CreateRequest is the actual data structure for the create request body.
 // swagger:model createRequest
-type Request struct {
+type CreateRequest struct {
 	// Optional: ID for the note. If not provided, a random ID will be generated.
-	ID   string `json:"id,omitempty" bson:"id,omitempty"`
+	ID string `json:"id,omitempty" bson:"id,omitempty"`
 	// Password for the note.
 	// required: true
 	Pass string `json:"pass" bson:"pass"`
@@ -20,12 +20,18 @@ type createNoteParams struct {
 	//
 	// in: body
 	// required: true
-	Body Request `json:"body"`
+	Body CreateRequest `json:"body"`
 }
 
-// Create response body
+// createNoteResponse defines the response of create endpoint
 // swagger:response createResponse
-type Response struct {
+type createNoteResponse struct {
+	// in: body
+	Body CreateResponse `json:"body"`
+}
+
+// CreateResponse is the actual response body for create
+type CreateResponse struct {
 	// ID of the created note.
 	ID string `json:"id" bson:"id"`
 }

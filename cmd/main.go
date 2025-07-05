@@ -29,17 +29,17 @@ import (
 )
 
 // Not using these directly, but need them for swagger generation
-var _ = create.Request{}
-var _ = create.Response{}
-var _ = read.Request{}
-var _ = read.Response{}
-var _ = updatenote.Request{}
-var _ = updatenote.Response{}
-var _ = updatepass.Request{}
-var _ = updatepass.Response{}
-var _ = delete.Request{}
-var _ = delete.Response{}
-var _ = ping.Response{}
+var _ = create.CreateRequest{}
+var _ = create.CreateResponse{}
+var _ = read.ReadRequest{}
+var _ = read.ReadResponse{}
+var _ = updatenote.UpdateNoteRequest{}
+var _ = updatenote.UpdateNoteResponse{}
+var _ = updatepass.UpdatePassRequest{}
+var _ = updatepass.UpdatePassResponse{}
+var _ = delete.DeleteRequest{}
+var _ = delete.DeleteResponse{}
+var _ = ping.PingResponse{}
 
 // ErrorMessage represents a generic error message.
 // swagger:model

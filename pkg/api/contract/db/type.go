@@ -7,14 +7,13 @@ import (
 
 // Query defines the structure for querying db for data
 type Query struct {
-	ID   string   `json:"_id" bson:"_id"`
+	ID string `json:"_id" bson:"_id"`
 }
 
 // ToBSON converts data to BSON representation
 func (q Query) ToBSON() ([]byte, error) {
 	return bson.Marshal(q)
 }
-
 
 // Data defines structure of db data
 type Data struct {

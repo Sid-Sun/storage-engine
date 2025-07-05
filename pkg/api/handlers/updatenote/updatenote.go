@@ -18,7 +18,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 		logger.Info("[UpdateNote] [attempt]")
 
 		if request.Body == nil {
-			logger.Info(fmt.Sprintf("[%s] %s", api, "Request body is empty"))
+			logger.Info(fmt.Sprintf("[%s] %s", api, "UpdateNoteRequest body is empty"))
 			writer.WriteHeader(http.StatusBadRequest)
 			return
 		}
@@ -30,7 +30,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		var req updatenote.Request
+		var req updatenote.UpdateNoteRequest
 		err = json.Unmarshal(data, &req)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Unmarshal", err.Error()))
@@ -87,7 +87,7 @@ func Handler(logger *zap.Logger, svc service.Service) http.HandlerFunc {
 			return
 		}
 
-		res := updatenote.Response{ID: req.ID}
+		res := updatenote.UpdateNoteResponse{ID: req.ID}
 		data, err = json.Marshal(res)
 		if err != nil {
 			logger.Error(fmt.Sprintf("[%s] [%s] %s", api, "Marshal", err.Error()))

@@ -1,11 +1,11 @@
 package delete
 
-// Request is the actual data structure for the delete request body.
+// DeleteRequest is the actual data structure for the delete request body.
 // swagger:model deleteRequest
-type Request struct {
+type DeleteRequest struct {
 	// ID of the note to delete.
 	// required: true
-	ID   string `json:"id" bson:"id"`
+	ID string `json:"id" bson:"id"`
 	// Password for the note.
 	// required: true
 	Pass string `json:"pass" bson:"pass"`
@@ -18,12 +18,18 @@ type deleteNoteParams struct {
 	//
 	// in: body
 	// required: true
-	Body Request `json:"body"`
+	Body DeleteRequest `json:"body"`
 }
 
-// Delete response body
+// deleteNoteResponse defines the response of delete endpoint
 // swagger:response deleteResponse
-type Response struct {
+type deleteNoteResponse struct {
+	// in: body
+	Body DeleteResponse `json:"body"`
+}
+
+// DeleteResponse is the actual response body for delete
+type DeleteResponse struct {
 	// ID of the deleted note.
 	ID string `json:"id" bson:"id"`
 }

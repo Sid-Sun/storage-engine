@@ -13,7 +13,7 @@ func Handler(logger *zap.Logger) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		logger.Info("[Ping] [attempt]")
 
-		res := ping.Response{
+		res := ping.PingResponse{
 			Message: message,
 		}
 

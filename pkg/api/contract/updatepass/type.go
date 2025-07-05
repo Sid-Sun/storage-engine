@@ -1,14 +1,14 @@
 package updatepass
 
-// Request is the actual data structure for the update password request body.
+// UpdatePassRequest is the actual data structure for the update password request body.
 // swagger:model updatepassRequest
-type Request struct {
+type UpdatePassRequest struct {
 	// ID of the note to update.
 	// required: true
-	ID      string `json:"id" bson:"id"`
+	ID string `json:"id" bson:"id"`
 	// Current password for the note.
 	// required: true
-	Pass    string `json:"pass" bson:"pass"`
+	Pass string `json:"pass" bson:"pass"`
 	// New password for the note.
 	// required: true
 	NewPass string `json:"new_pass" bson:"new_pass"`
@@ -21,12 +21,18 @@ type updatepassParams struct {
 	//
 	// in: body
 	// required: true
-	Body Request `json:"body"`
+	Body UpdatePassRequest `json:"body"`
 }
 
-// Update password response body
+// updatepassNoteResponse defines the response of updatepass endpoint
 // swagger:response updatepassResponse
-type Response struct {
+type updatepassNoteResponse struct {
+	// in: body
+	Body UpdatePassResponse `json:"body"`
+}
+
+// UpdatePassResponse is the actual response body for updatepass
+type UpdatePassResponse struct {
 	// ID of the updated note.
 	ID string `json:"id" bson:"id"`
 }

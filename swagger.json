@@ -225,6 +225,30 @@
     }
   },
   "definitions": {
+    "CreateResponse": {
+      "description": "CreateResponse is the actual response body for create",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "ID of the created note.",
+          "type": "string",
+          "x-go-name": "ID"
+        }
+      },
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/create"
+    },
+    "DeleteResponse": {
+      "description": "DeleteResponse is the actual response body for delete",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "ID of the deleted note.",
+          "type": "string",
+          "x-go-name": "ID"
+        }
+      },
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/delete"
+    },
     "ErrorMessage": {
       "type": "object",
       "title": "ErrorMessage represents a generic error message.",
@@ -235,6 +259,23 @@
         }
       },
       "x-go-package": "github.com/sid-sun/storage-engine/cmd"
+    },
+    "ReadResponse": {
+      "description": "ReadResponse is the actual response body for read",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "ID of the note.",
+          "type": "string",
+          "x-go-name": "ID"
+        },
+        "note": {
+          "description": "Content of the note.",
+          "type": "string",
+          "x-go-name": "Note"
+        }
+      },
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/read"
     },
     "SuccessMessage": {
       "type": "object",
@@ -247,9 +288,33 @@
       },
       "x-go-package": "github.com/sid-sun/storage-engine/cmd"
     },
+    "UpdateNoteResponse": {
+      "description": "UpdateNoteResponse is the actual response body for updatenote",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "ID of the updated note.",
+          "type": "string",
+          "x-go-name": "ID"
+        }
+      },
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/updatenote"
+    },
+    "UpdatePassResponse": {
+      "description": "UpdatePassResponse is the actual response body for updatepass",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "ID of the updated note.",
+          "type": "string",
+          "x-go-name": "ID"
+        }
+      },
+      "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/updatepass"
+    },
     "createRequest": {
       "type": "object",
-      "title": "Request is the actual data structure for the create request body.",
+      "title": "CreateRequest is the actual data structure for the create request body.",
       "required": [
         "pass",
         "note"
@@ -271,12 +336,12 @@
           "x-go-name": "Pass"
         }
       },
-      "x-go-name": "Request",
+      "x-go-name": "CreateRequest",
       "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/create"
     },
     "deleteRequest": {
       "type": "object",
-      "title": "Request is the actual data structure for the delete request body.",
+      "title": "DeleteRequest is the actual data structure for the delete request body.",
       "required": [
         "id",
         "pass"
@@ -293,12 +358,12 @@
           "x-go-name": "Pass"
         }
       },
-      "x-go-name": "Request",
+      "x-go-name": "DeleteRequest",
       "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/delete"
     },
     "readRequest": {
       "type": "object",
-      "title": "Request is the actual data structure for the read request body.",
+      "title": "ReadRequest is the actual data structure for the read request body.",
       "required": [
         "id",
         "pass"
@@ -315,12 +380,12 @@
           "x-go-name": "Pass"
         }
       },
-      "x-go-name": "Request",
+      "x-go-name": "ReadRequest",
       "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/read"
     },
     "updatenoteRequest": {
       "type": "object",
-      "title": "Request is the actual data structure for the update note request body.",
+      "title": "UpdateNoteRequest is the actual data structure for the update note request body.",
       "required": [
         "id",
         "note",
@@ -348,12 +413,12 @@
           "x-go-name": "Pass"
         }
       },
-      "x-go-name": "Request",
+      "x-go-name": "UpdateNoteRequest",
       "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/updatenote"
     },
     "updatepassRequest": {
       "type": "object",
-      "title": "Request is the actual data structure for the update password request body.",
+      "title": "UpdatePassRequest is the actual data structure for the update password request body.",
       "required": [
         "id",
         "pass",
@@ -376,27 +441,21 @@
           "x-go-name": "Pass"
         }
       },
-      "x-go-name": "Request",
+      "x-go-name": "UpdatePassRequest",
       "x-go-package": "github.com/sid-sun/storage-engine/pkg/api/contract/updatepass"
     }
   },
   "responses": {
     "createResponse": {
-      "description": "Create response body",
-      "headers": {
-        "id": {
-          "type": "string",
-          "description": "ID of the created note."
-        }
+      "description": "createNoteResponse defines the response of create endpoint",
+      "schema": {
+        "$ref": "#/definitions/CreateResponse"
       }
     },
     "deleteResponse": {
-      "description": "Delete response body",
-      "headers": {
-        "id": {
-          "type": "string",
-          "description": "ID of the deleted note."
-        }
+      "description": "deleteNoteResponse defines the response of delete endpoint",
+      "schema": {
+        "$ref": "#/definitions/DeleteResponse"
       }
     },
     "genericError": {
@@ -421,34 +480,21 @@
       }
     },
     "readResponse": {
-      "description": "Read response body",
-      "headers": {
-        "id": {
-          "type": "string",
-          "description": "ID of the note."
-        },
-        "note": {
-          "type": "string",
-          "description": "Content of the note."
-        }
+      "description": "readNoteResponse defines the response of read endpoint",
+      "schema": {
+        "$ref": "#/definitions/ReadResponse"
       }
     },
     "updatenoteResponse": {
-      "description": "Update note response body",
-      "headers": {
-        "id": {
-          "type": "string",
-          "description": "ID of the updated note."
-        }
+      "description": "updatenoteNoteResponse defines the response of updatenote endpoint",
+      "schema": {
+        "$ref": "#/definitions/UpdateNoteResponse"
       }
     },
     "updatepassResponse": {
-      "description": "Update password response body",
-      "headers": {
-        "id": {
-          "type": "string",
-          "description": "ID of the updated note."
-        }
+      "description": "updatepassNoteResponse defines the response of updatepass endpoint",
+      "schema": {
+        "$ref": "#/definitions/UpdatePassResponse"
       }
     }
   }
